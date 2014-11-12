@@ -18,7 +18,7 @@
 # Comment in deployment
 lui $t1, 0x0000
 ori $t1, 0x0004
-sw $t1, 0x90000000
+sw $t1, 0x10030000
 # /Comment in deployment
 ### /FIXTURES ###
 
@@ -32,7 +32,7 @@ LoadOne:
 	ori 	$s0, 0x0000
 
 ConfigSettings:
-	lw 	$t4, 0x90000000 	# Get DIP settings state
+	lw 	$t4, 0x10030000 	# Get DIP settings state
 	add 	$t0, $zero, $t4 	# Copy DIP value and get state mode by SRL
 	sll 	$t0, $t0, 31
 	srl 	$t0, $t0, 31 		# Setting state in $t0, bit 0
@@ -57,7 +57,7 @@ Config_GetSelection:
 	ori 	$t1, 0x0001
 	nor 	$t1, $t1, $s0 		# Create a bitmask
 	add	$t2, $t2, $zero		# clear $t2
-	lw 	$t5, 0x90000000 	# Get DIP settings state
+	lw 	$t5, 0x10030000 	# Get DIP settings state
 	and 	$t2, $t5, $t1
 	srl	$t2, $t2, 1 		# $t2 now contains bit selection
 	sub	$t4, $t0, $t4
@@ -213,7 +213,7 @@ CASE_HILO:
 
 
 CheckToggleAndLoop:
-	lw 	$t4, 0x90000000 	# Get DIP settings state
+	lw 	$t4, 0x10030000 	# Get DIP settings state
 	add	$t0, $zero, 25		# Clear $t0
 	slt 	$t0, $zero, $t0		# Fancy way of loading $t0 with 1 
 	and	$t4, $t4, $t0 		# Bitmask to get toggle switch value 
