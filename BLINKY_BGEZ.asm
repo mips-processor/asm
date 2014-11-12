@@ -29,19 +29,23 @@ CASE_PEUPEU:
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 2
-	mul 	$t5, $t5, $t6
+	mult	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 3
-	mul 	$t5, $t5, $t6
+	mult	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 4
-	mul 	$t5, $t5, $t6
+	mult	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 5
-	mul 	$t5, $t5, $t6
+	mult	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 4
@@ -60,5 +64,60 @@ CASE_PEUPEU:
 	srl	$t5, $t5, 1
 	sw	$t5, 0x10020000			# Write to screen
 
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+
+
+CASE_PEUPEU2:
+## Shoot Nerf guns. peu peu!
+	lui 	$t6, 0
+	ori 	$t6, 2
+	lui	$t5, 0x0000
+	ori 	$t5, 0x0003
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 2
+	mult	$t5, $t6
+	mflo	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 3
+	mult	$t5, $t6
+	mflo	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 4
+	mult	$t5, $t6
+	mflo	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 5
+	mult	$t5, $t6
+	mflo	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 4
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+
+	# 3
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 2
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 1
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
 
 	j 	CASE_BLINKY
