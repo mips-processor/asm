@@ -26,6 +26,10 @@ LoadBitmaps:
 	lui 	$t1, 0x0000
 	ori 	$t1, 0x0001
 	sw 	$t1, 0x10010000		# Store value '1' in memory location 0x10010000
+	
+LoadOne:
+	lui	$s0, 0x0000		# Store zero
+	ori 	$s0, 0x0000
 
 ConfigSettings:
 	lw 	$t4, 0x90000000 	# Get DIP settings state
@@ -51,7 +55,7 @@ ConfigSettings:
 Config_GetSelection:
 	lui 	$t1, 0x0000
 	ori 	$t1, 0x0001
-	not 	$t1, $t1 		# Create a bitmask
+	nor 	$t1, $t1, $s0 		# Create a bitmask
 	add	$t2, $t2, $zero		# clear $t2
 	lw 	$t5, 0x90000000 	# Get DIP settings state
 	and 	$t2, $t5, $t1
@@ -71,6 +75,18 @@ DecideBranchToJump:
 	beq 	$t2, $t5, CASE_BLINKY	# Do a blinky
 	### /Jump Statement ###
 	
+	### Jump Statement ###
+	add 	$t5, $zero, $zero	# Reset $t5
+	ori	$t5, 2			# Load $t5 with combination 1
+	beq 	$t2, $t5, CASE_PEUPEU	# Case PEUPEU
+	### /Jump Statement ###
+	
+	### Jump Statement ###
+	add 	$t5, $zero, $zero	# Reset $t5
+	ori	$t5, 3			# Load $t5 with combination 1
+	beq 	$t2, $t5, CASE_HILO	# Case HILO
+	### /Jump Statement ###
+	
 	## Otherwise, jump to case invalid.
 	
 CASE_INVALID:
@@ -86,7 +102,7 @@ CASE_INVALID:
 	### /Delay ###	
 	lui	$t4, 0x0000
 	ori 	$t4, 0xFFFF
-	not	$t4, $t4
+	nor	$t4, $t4, $s0
 	nor	$t5, $t5, $t4			# toggle
 	sw	$t5, 0x10020000			# Write to screen	
 	### Delay ###
@@ -122,8 +138,75 @@ CASE_BLINKY:
 	
 CASE_PEUPEU:
 ## Shoot Nerf guns. peu peu!
+	lui 	$t6, 0
+	ori 	$t6, 2
+	lui	$t5, 0x0000
+	ori 	$t5, 0x0001
+	sw	$t5, 0x10020000			# Write to screen
 	
+	# 2
+	mul 	$t5, $t5, $t6
+	sw	$t5, 0x10020000			# Write to screen
 	
+	# 3
+	mul 	$t5, $t5, $t6
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 4
+	mul 	$t5, $t5, $t6
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 5
+	mul 	$t5, $t5, $t6
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 4
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+
+	# 3
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 2
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+	
+	# 1
+	srl	$t5, $t5, 1
+	sw	$t5, 0x10020000			# Write to screen
+	
+	j 	CheckToggleAndLoop		# Jump to end and (possibly) loop	
+	
+
+CASE_HILO: 
+	lui 	$t6, 0x0000
+	ori	$t6, 0xFFFF 
+	lui	$t7, 0x000F
+	ori 	$t7, 0xFFFF
+	mult	$t7, $t6			# HI and LO populated
+	
+	mfhi	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	### Delay ###
+	addi 	$t5, $zero, 10			# Load $t5 with delay of 10
+	_DELAY_LOOP_HILO_0:
+	sub	$t5, $t5, 1			# Decrement counter 
+	bgez 	$t5, _DELAY_LOOP_BLINKY_0	# Loop
+	### /Delay ###	
+	
+	mflo	$t5
+	sw	$t5, 0x10020000			# Write to screen
+	
+	### Delay ###
+	addi 	$t5, $zero, 10			# Load $t5 with delay of 10
+	_DELAY_LOOP_HILO_1:
+	sub	$t5, $t5, 1			# Decrement counter 
+	bgez 	$t5, _DELAY_LOOP_BLINKY_1	# Loop
+	### /Delay ###
+	j 	CheckToggleAndLoop		# Jump to end and (possibly) loop
+
 
 CheckToggleAndLoop:
 	lw 	$t4, 0x90000000 	# Get DIP settings state
