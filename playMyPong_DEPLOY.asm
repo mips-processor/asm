@@ -145,19 +145,23 @@ CASE_PEUPEU:
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 2
-	mul 	$t5, $t5, $t6
+	mult 	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 3
-	mul 	$t5, $t5, $t6
+	mult 	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 4
-	mul 	$t5, $t5, $t6
+	mult 	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 5
-	mul 	$t5, $t5, $t6
+	mult 	$t5, $t6
+	mflo	$t5
 	sw	$t5, 0x10020000			# Write to screen
 	
 	# 4
